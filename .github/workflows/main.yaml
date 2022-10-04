@@ -4,7 +4,10 @@ on:
     branches: [main]
 
 jobs:
+  test:
+    uses: ./.github/workflows/init.yaml
   Checkout:
+    needs: test
     name: checkout the code
     runs-on: ubuntu-latest
     steps:
@@ -22,8 +25,8 @@ jobs:
         run: |-
           cd function
           zip -r ../${{ github.sha }}.zip  .
-      - name:
-        uses: actions/upload-artifcat@v2
+      - name: upload artifcate
+        uses: actions/upload-artifact@v2
         with:
           name: zipped-bundle
           path: ${{ github.sha}}.zip
